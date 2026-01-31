@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,13 +30,26 @@ public class ActivityService {
     return convertToActivityResponse(savedActivity);
   }
 
-  public List<ActivityResponse> fetchActivities(){
-    List<ActivityResponse> activities = new ArrayList<>();
-    for(Activity activity: activityRepository.findAll()){
-      System.out.println("FETCH ACTIVITY: " + activity);
-      activities.add(convertToActivityResponse(activity));
-    }
-    return activities;
+  public List<ActivityResponse> getActivities(){
+    List<Activity> activities = this.activityRepository.findAll();
+    return activities
+            .stream()
+            .map(this::convertToActivityResponse)
+            .collect(Collectors.toList());
+  }
+
+  public List<ActivityResponse> getUserActivities(String userId){
+    List<Activity> activities = this.activityRepository.findByUserId(userId);
+    return activities
+            .stream()
+            .map(this::convertToActivityResponse)
+            .collect(Collectors.toList());
+  }
+
+  public ActivityResponse getActivityById(String id){
+    return activityRepository.findById(id)
+            .map(this::convertToActivityResponse)
+            .orElseThrow(() -> new RuntimeException("Activity not found with id: " + id));
   }
 
   public ActivityResponse convertToActivityResponse(Activity activity){

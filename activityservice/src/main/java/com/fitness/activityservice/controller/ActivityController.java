@@ -21,7 +21,17 @@ public class ActivityController {
   }
 
   @GetMapping("/getAll")
-  public ResponseEntity<List<ActivityResponse>> fetchActivities(){
-    return ResponseEntity.ok(activityService.fetchActivities());
+  public ResponseEntity<List<ActivityResponse>> getActivities(){
+    return ResponseEntity.ok(activityService.getActivities());
+  }
+
+  @GetMapping("/getUserActivities")
+  public ResponseEntity<List<ActivityResponse>> getUserActivities(@RequestHeader("X-User-ID") String userId){
+    return ResponseEntity.ok(activityService.getUserActivities(userId));
+  }
+
+  @GetMapping("/{activityId}")
+  public ResponseEntity<ActivityResponse> getActivityById(@PathVariable String activityId){
+    return ResponseEntity.ok(activityService.getActivityById(activityId));
   }
 }
