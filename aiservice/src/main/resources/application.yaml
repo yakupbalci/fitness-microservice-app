@@ -10,6 +10,10 @@ spring:
       port: 5672
       username: ${RABBITMQ_USERNAME}
       password: ${RABBITMQ_PASSWORD}
+  ai:
+    mistralai:
+      api-key: ${MISTRALAI_API_KEY}
+      base-url: https://api.mistral.ai/v1/chat/completions
 
 
 server:
@@ -27,3 +31,8 @@ rabbitmq:
     name: activity.queue
   routing:
     key: activity.tracking
+
+logging:
+  level:
+    org.springframework.boot.autoconfigure.mongo: DEBUG
+    org.springframework.data.mongodb.core: DEBUG
